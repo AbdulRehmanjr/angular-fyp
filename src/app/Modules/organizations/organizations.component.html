@@ -1,0 +1,166 @@
+<div *ngIf="view == 1" class="form-group">
+  <label class="custom-label form-label">Agency Detail
+    <span style="color: red" [hidden]="disabled" *ngIf="iscompulsory == true">*</span>
+  </label>
+  <div class="row">
+    <div class="col-md-10">
+      <!-- <ng-select name="organizationId"
+          maxlength="50">
+              <ng-option *ngFor="let value of organizations" [value]="value.id">
+                {{ value.name}}
+              </ng-option>
+          </ng-select> -->
+      <mat-select matInput>
+        <mat-option *ngFor="let organization of organizations" value="{{ organization.id }}">{{ organization.name }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div class="col-md-2">
+      <dx-button class="btn btn-light" icon="refresh" text="Refresh" (click)="agencyGet()"></dx-button>
+    </div>
+  </div>
+</div>
+<div *ngIf="view == 2" class="form-group">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="outer-div">
+        <div class="grid-wrapper">
+          <dx-data-grid #grid id="gridContainer" [dataSource]="organizations" keyExpr="id" [showColumnLines]="true"
+            [showRowLines]="true" [showBorders]="true"  [allowColumnResizing]="true"
+            width="100%"
+            >
+            <dxo-filter-row [visible]="true"></dxo-filter-row>
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-group-panel [visible]="false"></dxo-group-panel>
+            <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+            <dxo-scrolling mode="virtual"></dxo-scrolling>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-sorting mode="multiple"></dxo-sorting>
+            <dxo-paging [pageSize]="5"> </dxo-paging>
+            <dxo-pager
+              [visible]="true"
+              [allowedPageSizes]="allowedPageSizes"
+              [displayMode]="displayMode"
+              [showPageSizeSelector]="showPageSizeSelector"
+              [showInfo]="showInfo"
+              [showNavigationButtons]="showNavButtons"
+            >
+            </dxo-pager>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxi-column [width]="60" dataField="id" caption="Id" cssClass="myClass" alignment="center">
+            </dxi-column>
+            <dxi-column [width]="200" dataField="name" caption="Organization Name" cssClass="myClass"
+              alignment="center">
+            </dxi-column>
+            <dxi-column [width]="670" dataField="description" caption="Organization Description" cssClass="myClass"
+              alignment="left">
+            </dxi-column>
+            <dxi-column [width]="90" dataField="active" caption="Active" cssClass="myClass" alignment="center">
+            </dxi-column>
+            <dxi-column [allowFiltering]="false" [allowSorting]="false" alignment="center" caption="Action"
+              cellTemplate="cellTemplate">
+            </dxi-column>
+
+            <div *dxTemplate="let data of 'cellTemplate'">
+
+              <dx-button icon="edit" (click)="update(data)"></dx-button>
+            </div>
+          </dx-data-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="view == 4" class="form-group">
+  <form #f (ngSubmit)="submitNew()">
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Organization Name</label>
+            <!-- <span style="color: red;" [hidden]="disabled"> *</span> -->
+            <input [(ngModel)]="organizationForm.id" name="id" matInput placeholder="Name" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="control-label">Description</label>
+            <textarea [(ngModel)]="organizationForm.description" name="description" matInput placeholder="Text Area...."
+              cols="20" rows="5" required></textarea>
+            <ngb-alert type="alert">
+            </ngb-alert>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <div class="checkbox">
+              <label class="control-label">
+                <input type="checkbox" [checked]="organizationForm.active" [(ngModel)]="organizationForm.active"
+                  name="active" />
+                Active
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success" [disabled]="!f.noValidate">
+        <i class="fa fa-plus" aria-hidden="true"></i> Update
+      </button>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="view == 3" class="form-group">
+
+  <form #f (ngSubmit)="OnSubmit()">
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Organization Name</label>
+            <!-- <span style="color: red;" [hidden]="disabled"> *</span> -->
+            <input [(ngModel)]="organizationForm.id" name="id" matInput placeholder="Name" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="control-label">Description</label>
+            <textarea [(ngModel)]="organizationForm.description" name="description" matInput placeholder="Text Area...."
+              cols="20" rows="5" required></textarea>
+            <ngb-alert type="alert">
+              <p>dahskjdhsj</p>
+            </ngb-alert>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <div class="checkbox">
+              <label class="control-label">
+                <input type="checkbox" [checked]="organizationForm.active" [(ngModel)]="organizationForm.active"
+                  name="active" />
+                Active
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success" [disabled]="!f.noValidate">
+        <i class="fa fa-plus" aria-hidden="true"></i> Update
+      </button>
+    </div>
+  </form>
+</div>
